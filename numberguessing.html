@@ -1,23 +1,29 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Number Guessing Game</title>
-    <link rel="stylesheet" href="index.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Number Guessing Game</title>
+  <link rel="stylesheet" href="index.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="container">
-        <h1>Number Guessing Game</h1>
-        <p class="number-text">Guess a number between 1 and 100</p>
-        <input type="number" id="userGuess" placeholder="Enter your guess">
-        <button id="checkBtn">Check</button>
-        <button id="resetBtn">Reset</button>
-        <p id="message"></p>
-        <p id="attempts">Attempts: 0</p>
-        <button id="toggle">Dark Mode</button>
-    </div>  
-    <script src="index.js">
-    </script>
+
+  <div class="container">
+    <h1>🎯 Number Guessing Game</h1>
+    <p class="number-text">Guess a number between <strong>1 and 100</strong></p>
+
+    <input type="number" id="userGuess" placeholder="Enter your guess" />
+
+    <button id="checkBtn">Check Guess</button>
+    <button id="resetBtn" class="secondary">Reset Game</button>
+
+    <p id="message"></p>
+    <p id="attempts">Attempts: 0</p>
+
+    <button id="toggle" class="toggle">Dark Mode</button>
+  </div>
+
+  <script src="index.js"></script>
 </body>
 </html>

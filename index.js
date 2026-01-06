@@ -1,63 +1,84 @@
-let guess = document.getElementById("userGuess");
-let check = document.getElementById("checkBtn");
-let reset = document.getElementById("resetBtn");
-let msg = document.getElementById("message");
-let attemptCount = document.getElementById("attempts");
-let toggle = document.getElementById("toggle");
-let body = document.body;
+const guess = document.getElementById("userGuess");
+const check = document.getElementById("checkBtn");
+const reset = document.getElementById("resetBtn");
+const msg = document.getElementById("message");
+const attemptCount = document.getElementById("attempts");
+const toggle = document.getElementById("toggle");
+const container = document.querySelector(".container");
+
 let number = Math.floor(Math.random() * 100) + 1;
 let attempts = 0;
 
-function checkGuess() {
-    let userGuess = Number(guess.value);
-    if (userGuess < 1 || userGuess > 100) {
-        alert("Please enter a number between 1 and 100.");
-        guess.value = "";
-        return;
-    }
-    attempts++;
-    attemptCount.innerText = `Attempts: ${attempts}`;
-    if (userGuess === number) {
-        msg.innerText = "🎉 Correct! You guessed the number!";
-        msg.classList.add("success");
-        guess.disabled = true;
-        check.disabled = true;
-    } else {
-        msg.innerText = userGuess > number ? "📉 Too high! Try again." : "📈 Too low! Try again.";
-        msg.classList.add("error");
-    }
+/* =====================
+   Helpers
+===================== */
+function showError(text) {
+  msg.textContent = text;
+  msg.className = "error";
+  container.classList.add("shake");
+  setTimeout(() => container.classList.remove("shake"), 400);
 }
 
-// Add this event listener for the check button
-check.addEventListener("click", function() {
-    checkGuess();
+function showSuccess(text) {
+  msg.textContent = text;
+  msg.className = "success";
+  launchConfetti();
+}
+
+function launchConfetti() {
+  for (let i = 0; i < 25; i++) {
+    const confetti = document.createElement("div");
+    confetti.classList.add("confetti");
+    confetti.style.setProperty("--x", Math.random());
+    confetti.style.setProperty("--y", Math.random());
+    document.body.appendChild(confetti);
+    setTimeout(() => confetti.remove(), 1200);
+  }
+}
+
+/* =====================
+   Game Logic
+===================== */
+check.addEventListener("click", () => {
+  const userGuess = Number(guess.value);
+
+  if (!userGuess || userGuess < 1 || userGuess > 100) {
+    showError("❌ Enter a number between 1 and 100");
+    return;
+  }
+
+  attempts++;
+  attemptCount.textContent = `Attempts: ${attempts}`;
+
+  if (userGuess === number) {
+    showSuccess("🎉 Correct! You guessed it!");
+    guess.disabled = true;
+    check.disabled = true;
+  } else if (userGuess > number) {
+    showError("📉 Too high! Try again.");
+  } else {
+    showError("📈 Too low! Try again.");
+  }
 });
 
-guess.addEventListener("keypress", function (event) {
-    if (event.key === "Enter") {
-        check.click(); 
-    }
+guess.addEventListener("keydown", (e) => {
+  if (e.key === "Enter") check.click();
 });
 
-reset.addEventListener("click", function () {
-    number = Math.floor(Math.random() * 100) + 1;
-    guess.value = "";
-    guess.disabled = false;
-    check.disabled = false;
-    msg.innerText = "";
-    attempts = 0;
-    attemptCount.innerText = `Attempts: ${attempts}`;
-    msg.classList.remove("success", "error");
+reset.addEventListener("click", () => {
+  number = Math.floor(Math.random() * 100) + 1;
+  attempts = 0;
+  guess.value = "";
+  guess.disabled = false;
+  check.disabled = false;
+  msg.textContent = "";
+  msg.className = "";
+  attemptCount.textContent = "Attempts: 0";
 });
 
-toggle.addEventListener("click", function () {
-    if (document.body.classList.contains("dark-mode")) {
-        document.body.classList.remove("dark-mode");
-        toggle.innerText = "Dark Mode";
-    } else {
-        document.body.classList.add("dark-mode");
-        toggle.innerText = "Normal Mode";
-    }
+toggle.addEventListener("click", () => {
+  document.body.classList.toggle("dark-mode");
+  toggle.textContent = document.body.classList.contains("dark-mode")
+    ? "Light Mode"
+    : "Dark Mode";
 });
-
-
